@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
                         positionOffsetPixels: Int
                     ) {
                         it.color = colorComputer.colorAt(positionOffset, position, position + 1)
-                        it.notifyDataSetChanged()
+                        pager.post { it.notifyDataSetChanged() }
                         super.onPageScrolled(position, positionOffset, positionOffsetPixels)
                     }
                 })
