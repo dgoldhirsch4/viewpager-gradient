@@ -19,9 +19,11 @@ class ViewPagerAdapter(private val numberOfPages: Int) : RecyclerView.Adapter<Pa
 
     override fun getItemCount(): Int = numberOfPages
 
-    override fun onBindViewHolder(holder: PagerVH, position: Int) = holder.itemView.run {
-        page_text.text = context.getString(R.string.page, position + 1)
-        container.setBackgroundColor(color)
+    override fun onBindViewHolder(holder: PagerVH, position: Int) {
+        holder.itemView.run {
+            page_text.text = context.getString(R.string.page, position + 1)
+            container.setBackgroundColor(color)
+        }
     }
 }
 

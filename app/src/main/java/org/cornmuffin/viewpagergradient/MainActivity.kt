@@ -7,7 +7,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ColorComputer.compression = 0.5
+        ColorComputer.compression = 2.0
         openViewPagerFragment()
     }
 
