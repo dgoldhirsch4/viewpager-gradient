@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_page.view.*
 
-class ViewPagerAdapter : RecyclerView.Adapter<PagerVH>() {
+class ViewPagerAdapter(private val numberOfPages: Int) : RecyclerView.Adapter<PagerVH>() {
     var color: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerVH {
@@ -17,7 +17,7 @@ class ViewPagerAdapter : RecyclerView.Adapter<PagerVH>() {
         )
     }
 
-    override fun getItemCount(): Int = Int.MAX_VALUE
+    override fun getItemCount(): Int = numberOfPages
 
     override fun onBindViewHolder(holder: PagerVH, position: Int) = holder.itemView.run {
         page_text.text = context.getString(R.string.page, position + 1)

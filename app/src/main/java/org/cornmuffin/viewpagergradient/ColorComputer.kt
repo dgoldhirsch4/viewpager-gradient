@@ -13,7 +13,8 @@ object ColorComputer {
         android.R.color.holo_purple
     )
 
-    fun colorAt(position: Int, context: Context) = context.getColor(colorIds[position % colorIds.size])
+    fun colorAt(position: Int, context: Context) =
+        context.getColor(colorIds[position % colorIds.size])
 
     fun colorAt(offset: Float, startPosition: Int, endPosition: Int, context: Context) =
         argbEvaluator.evaluate(

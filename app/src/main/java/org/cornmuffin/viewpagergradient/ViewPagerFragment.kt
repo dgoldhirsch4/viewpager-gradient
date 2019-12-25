@@ -19,7 +19,7 @@ class ViewPagerFragment: Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         pager.apply {
-            adapter = ViewPagerAdapter().also {
+            adapter = ViewPagerAdapter(NUMBER_OF_PAGES).also {
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageScrolled(
                         position: Int,
@@ -36,5 +36,9 @@ class ViewPagerFragment: Fragment() {
         }
 
         super.onActivityCreated(savedInstanceState)
+    }
+
+    companion object {
+        const val NUMBER_OF_PAGES = 5
     }
 }
