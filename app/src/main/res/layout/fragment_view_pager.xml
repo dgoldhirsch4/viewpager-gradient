@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ViewPagerFragment">
 
-    <FrameLayout
-        android:id="@+id/view_pager_fragment_container"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
