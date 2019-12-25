@@ -3,13 +3,10 @@ package org.cornmuffin.viewpagergradient
 import android.animation.ArgbEvaluator
 import android.content.Context
 import android.util.Log
-import java.lang.Double.min
+import kotlin.math.pow
 
-class ColorComputer(private val context: Context) {
+class ColorComputer(private val context: Context, private val isCompressed:Boolean = false) {
     private val argbEvaluator = ArgbEvaluator()
-
-    private val delay = 0.20
-    private val delayFactor = 1.0 / delay
 
     private val colorIds = intArrayOf(
         android.R.color.holo_orange_light,
@@ -21,11 +18,8 @@ class ColorComputer(private val context: Context) {
     fun colorAt(position: Int) = context.getColor(colorIds[position % colorIds.size])
 
     fun colorAt(offset: Float, startPosition: Int, endPosition: Int): Int {
-        val effectiveOffset = when {
-            offset <= delay -> 0f
-            offset >= 1.0 - delay -> 1f
-            else -> min((offset - delay) * delayFactor, 1.00).toFloat()
-        }
+        val effectiveOffset =
+            if (isCompressed) sigmoidBetweenZeroAndOne(offset.toDouble()).toFloat() else offset
 
         Log.e("=====", "$offset $effectiveOffset $startPosition")
 
@@ -35,4 +29,13 @@ class ColorComputer(private val context: Context) {
             colorAt(endPosition)
         ) as Int
     }
+
+    private fun sigmoidBetweenZeroAndOne(x: Double) = when (x) {
+        0.0 -> 0.0
+        1.0 -> 1.0
+        else -> sigmoid(x * 12.0 - 6.0)
+    }
+
+    // https://en.wikipedia.org/wiki/Sigmoid_function
+    private fun sigmoid(x: Double) = 1.0 / (1.0 + Math.E.pow(-1.0 * x))
 }
