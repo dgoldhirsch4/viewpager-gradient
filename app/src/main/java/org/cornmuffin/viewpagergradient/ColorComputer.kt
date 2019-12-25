@@ -3,7 +3,7 @@ package org.cornmuffin.viewpagergradient
 import android.animation.ArgbEvaluator
 import android.content.Context
 
-class ColorComputer(val context: Context) {
+object ColorComputer {
     private val argbEvaluator = ArgbEvaluator()
 
     private val colorIds = intArrayOf(
@@ -13,8 +13,12 @@ class ColorComputer(val context: Context) {
         android.R.color.holo_purple
     )
 
-    fun colorAt(position: Int) = context.getColor(colorIds[position % colorIds.size])
+    fun colorAt(position: Int, context: Context) = context.getColor(colorIds[position % colorIds.size])
 
-    fun colorAt(offset: Float, startPosition: Int, endPosition: Int) =
-        argbEvaluator.evaluate(offset, colorAt(startPosition), colorAt(endPosition)) as Int
+    fun colorAt(offset: Float, startPosition: Int, endPosition: Int, context: Context) =
+        argbEvaluator.evaluate(
+            offset,
+            colorAt(startPosition, context),
+            colorAt(endPosition, context)
+        ) as Int
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ViewPagerGradient</string>
+    <string name="page">Page %d</string>
 </resources>

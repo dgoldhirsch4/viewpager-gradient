@@ -7,13 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_page.view.*
 
 class ViewPagerAdapter : RecyclerView.Adapter<PagerVH>() {
-    private lateinit var colorComputer: ColorComputer
-
     var color: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerVH {
-        colorComputer = ColorComputer(parent.context)
-        color = colorComputer.colorAt(0)
+        color = ColorComputer.colorAt(0, parent.context)
 
         return PagerVH(
             LayoutInflater.from(parent.context).inflate(R.layout.item_page, parent, false)
@@ -23,7 +20,7 @@ class ViewPagerAdapter : RecyclerView.Adapter<PagerVH>() {
     override fun getItemCount(): Int = Int.MAX_VALUE
 
     override fun onBindViewHolder(holder: PagerVH, position: Int) = holder.itemView.run {
-        page_text.text = "Page ${position + 1}"
+        page_text.text = context.getString(R.string.page, position + 1)
         container.setBackgroundColor(color)
     }
 }
