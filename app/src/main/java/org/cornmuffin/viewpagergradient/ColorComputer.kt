@@ -2,10 +2,11 @@ package org.cornmuffin.viewpagergradient
 
 import android.animation.ArgbEvaluator
 import android.content.Context
+import android.util.Log
 import kotlin.math.pow
 
 object ColorComputer {
-    var useCompression: Boolean = true
+    var compression: Double? = null
 
     private val argbEvaluator = ArgbEvaluator()
 
@@ -26,29 +27,31 @@ object ColorComputer {
         context: Context
     ): Int {
 
-        val effectiveOffset = if (useCompression) {
-            SigmoidBetweenZeroAndOne.compute(offset.toDouble()).toFloat()
-        } else {
-            offset
-        }
+        val compressedOffset = compression?.let {
+            SigmoidBetweenZeroAndOne.compute(offset.toDouble(), it).toFloat()
+        } ?: offset
+
+        Log.e(
+            "ColorComputer",
+            "compression: $compression offset: $offset compressedOffset: $compressedOffset"
+        )
 
         return argbEvaluator.evaluate(
-            effectiveOffset,
+            compressedOffset,
             colorAt(startPosition, context),
             colorAt(endPosition, context)
         ) as Int
     }
 
     object SigmoidBetweenZeroAndOne {
-        private const val COMPRESSION = 0.5
-
-        fun compute(x: Double) = when (x) {
+        fun compute(x: Double, compression: Double) = when (x) {
             0.0 -> 0.0
             1.0 -> 1.0
-            else -> sigmoid(x * 12.0 - 6.0)
+            else -> sigmoid(x * 12.0 - 6.0, compression)
         }
 
         // https://en.wikipedia.org/wiki/Sigmoid_function
-        private fun sigmoid(x: Double) = 1.0 / (1.0 + Math.E.pow(-1.0 * COMPRESSION * x))
+        private fun sigmoid(x: Double, compression: Double) =
+            1.0 / (1.0 + Math.E.pow(-1.0 * compression * x))
     }
 }
