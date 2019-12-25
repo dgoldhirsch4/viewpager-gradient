@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_view_pager.*
 
 class ViewPagerFragment: Fragment() {
@@ -18,6 +20,8 @@ class ViewPagerFragment: Fragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         pager.apply {
             adapter = ViewPagerAdapter(NUMBER_OF_PAGES).also {
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -33,9 +37,9 @@ class ViewPagerFragment: Fragment() {
                     }
                 })
             }
-        }
 
-        super.onActivityCreated(savedInstanceState)
+            TabLayoutMediator(tab_layout, this) { _, _ -> }.attach()
+        }
     }
 
     companion object {
