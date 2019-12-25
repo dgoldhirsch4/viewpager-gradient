@@ -6,10 +6,11 @@ import android.util.Log
 import kotlin.math.pow
 
 object ColorComputer {
-    // Well-behaved values must be >= 0.5.
-    // Less than 1.0 eases the compression (less noticeable).
-    // 1.0 and higher makes the compression very noticeable.
-    // If null, there is no compression--the raw offsets are linear.
+    // Null compression => no compression (gradient is linear).
+    // Meaningful compression values are all greater than or equal to 0.5.
+    // Compression less than 1.0 means that the gradient is closer to being linear.
+    // Compression greater than 1.0 means the gradient takes longer to begin but is
+    // quicker when it happens.
     var compression: Double? = null
 
     private val argbEvaluator = ArgbEvaluator()
@@ -41,13 +42,29 @@ object ColorComputer {
     }
 
     object LogisticBetweenZeroAndOne {
+
+        /**
+         * Get the value along a Logistic Function Curve ranging from 0.0 to 1.0,
+         * with some control over the steepness of the curve (which we call here
+         * 'compression').
+         *
+         * https://en.wikipedia.org/wiki/Logistic_function
+         *
+         * This is derived by using the input x as a percentage along the x-axis
+         * of a Standard Logistic Function (whose parameters limit the height of the
+         * function to 1.0 and for which the function crosses the y-axis at 0.5,
+         * and for which the function is essentially zero at -6 and 1 at +6.
+         *
+         * Given the constants used in the function, the compression will produce
+         * reasonable results only if it is greater than or equal to 0.5 (smaller values
+         * flatten the curve such that by -6 and +6 it is not close to zero and one, respectively).
+         */
         fun compute(x: Double, compression: Double) = when (x) {
             0.0 -> 0.0
             1.0 -> 1.0
             else -> logistic(x * 12.0 - 6.0, compression)
         }
 
-        // https://en.wikipedia.org/wiki/Logistic_function
         private fun logistic(x: Double, compression: Double) =
             1.0 / (1.0 + Math.E.pow(-1.0 * compression * x))
     }
